@@ -1,0 +1,41 @@
+{block content}
+
+<div class="alert alert-{$question->is_correct ? 'success' : 'danger'}">Tato
+    odpověd {$question->is_correct ? 'je' : 'není'} správná!
+</div>
+
+<p class="lead text-{$question->is_correct ? 'success' : 'danger'}">
+    {$question_number}/{$test->questions}) Jaký je {$question->family === 'major' ? 'durový' : 'molový'}
+    {$question->type} od tónu {$question->note}?
+</p>
+{if !$question->is_correct}
+    <div class="offset-1">
+        {if count($question->correct_answer) !== count($question->answer)}
+            <p class="text-danger">Tento akord má obsahovat právě {count($question->correct_answer)} tóny!</p>
+        {else}
+            {foreach $question->answer as $i => $answered_note}
+                {if isset($question->diff[$i])}
+                    <span class="text-danger">{$answered_note}</span>
+                {else}
+                    {$answered_note}
+                {/if}
+            {/foreach}
+            <p class="hidden d-none">
+                Správná odpověď: {join(' ', $question->correct_answer)}
+            </p>
+        {/if}
+    </div>
+{/if}
+
+<div class="row">
+    <div class="col-md-12">
+        <hr />
+        <a class="btn btn-secondary" href="{link Chords:default, question => $current_question}">Zkusit odpovědět
+            znovu</a>
+        {if $test->questions === $current_question}
+            <a class="btn btn-primary" href="{link Test:answer}">Vyhodnotit test</a>
+        {else}
+            <a class="btn btn-primary" href="{link Chords:default, question => $next_question}">Další otázka</a>
+        {/if}
+    </div>
+</div>

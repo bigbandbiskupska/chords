@@ -1,0 +1,6 @@
+{block content}
+<p class="lead">
+    {$question_number}/{$question_n}) Jaký je {$question->family === 'major' ? 'durový' : 'molový'}
+    {$question->type} od tónu {$question->note}?
+</p>
+{control chordQuestionForm}

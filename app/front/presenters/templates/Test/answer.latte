@@ -1,0 +1,34 @@
+{block content}
+
+{foreach $questions as $n => $question}
+    <div class="">
+        <p class="lead text-{$question->is_correct ? 'success' : 'danger'}">
+            {$n}/{$test->questions}) Jaký je {$question->family === 'major' ? 'durový' : 'molový'}
+            {$question->type} od tónu {$question->note}?
+        </p>
+        <div class="offset-1">
+
+            {if count($question->correct_answer) !== count($question->answer)}
+                <p class="text-danger">Tento akord obsahue právě {count($question->correct_answer)} tóny!</p>
+            {else}
+                Vaše odpověď:
+                {foreach $question->answer as $i => $answered_note}
+                    {if isset($question->diff[$i])}
+                        <span class="text-danger">{$answered_note}</span>
+                    {else}
+                        <span class="text-success">{$answered_note}</span>
+                    {/if}
+                {/foreach}
+                <p>
+                    Správná odpověď: {join(' ', $question->correct_answer)}
+                </p>
+            {/if}
+        </div>
+    </div>
+{/foreach}
+
+<div>
+    <p>Vaše skóre: {$test->successful * 100 / $test->answered|number: 2}%</p>
+</div>
+
+<a class="btn btn-primary" href="{link Test:default}">Začít nový test</a>
