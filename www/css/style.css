@@ -18,6 +18,5 @@ body {
 
 .content {
     padding-top: 70px;
-    padding-bottom: 30px;
-    height: calc(100% - 30px)
+    padding-bottom: 40px;
 }

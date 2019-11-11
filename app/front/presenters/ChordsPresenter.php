@@ -146,7 +146,10 @@ class ChordsPresenter extends BasePresenter
     protected function createComponentChordQuestionForm($name)
     {
         $form = new Form();
-        $form->addText('answer');
+        $form->addText('answer')
+            ->setRequired('Musíte zadat odpověď')
+            ->setHtmlAttribute('placeholder', 'např. c e g')
+            ->setHtmlAttribute("autofocus", true);
         $form->onSuccess[] = function (Form $form) {
             $values = $form->values;
 
