@@ -101,12 +101,14 @@ class TestPresenter extends BasePresenter
         if (!isset($this->session->tests)) {
             $this->session->tests = [];
         }
-        $this->session->tests[$this->session->test->id] = (object)[
-            'id' => $this->session->test->id,
-            'answered' => $this->session->test->answered,
-            'successful' => $this->session->test->successful,
-            'failed' => $this->session->test->failed,
-        ];
+        if ($this->session->test && $this->session->test->id) {
+            $this->session->tests[$this->session->test->id] = (object)[
+                'id' => $this->session->test->id,
+                'answered' => $this->session->test->answered,
+                'successful' => $this->session->test->successful,
+                'failed' => $this->session->test->failed,
+            ];
+        }
         $this->template->test = $this->session->test;
         $this->template->questions = $this->session->questions;
     }
