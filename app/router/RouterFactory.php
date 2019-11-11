@@ -16,6 +16,7 @@ class RouterFactory
     {
         $router = new RouteList;
         $router[] = new Route('[home]', 'Front:Test:default');
+        $router[] = new Route('stats', 'Front:Test:stats');
         $router[] = new Route('test/finished', 'Front:Test:answer');
         $router[] = new Route('test/question/<question>', 'Front:Chords:default');
         $router[] = new Route('test/question/<question>/answer', 'Front:Chords:answer');

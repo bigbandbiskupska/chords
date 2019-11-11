@@ -1,0 +1,31 @@
+{block content}
+
+{if count($tests)}
+    <p class="lead">Všechny testy</p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Skóre</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr n:foreach="$tests as $time => $test">
+            <td>{$time|date: 'Y-m-d H:i:s'}</td>
+            <td>{$test->successful}/{$test->answered} ({$test->successful * 100 / $test->answered|number: 2}%)</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th>Celkem</th>
+            <th>{$total_successful}/{$total_answered}</th>
+        </tr>
+        <tr>
+            <th>Úspěšnost</th>
+            <th>{$total_answered > 0 ? $total_successful * 100 / $total_answered : 0|number: 2}%</th>
+        </tr>
+        </tfoot>
+    </table>
+{else}
+    Zatím žádné testy
+{/if}

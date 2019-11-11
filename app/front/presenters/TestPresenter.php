@@ -12,6 +12,7 @@ namespace App\FrontModule\Presenters;
 use Nette\Http\Session;
 use Nette\Http\SessionSection;
 use Tulinkry\Application\UI\Form;
+use Tulinkry\DateTime;
 
 class TestPresenter extends BasePresenter
 {
@@ -73,6 +74,7 @@ class TestPresenter extends BasePresenter
                     'answered' => 0,
                     'successful' => 0,
                     'failed' => 0,
+                    'id' => time()
                 ]
             );
             $this->session->last_test_settings = (array)$values;
@@ -96,7 +98,32 @@ class TestPresenter extends BasePresenter
 
     public function actionAnswer()
     {
+        if (!isset($this->session->tests)) {
+            $this->session->tests = [];
+        }
+        $this->session->tests[$this->session->test->id] = (object)[
+            'id' => $this->session->test->id,
+            'answered' => $this->session->test->answered,
+            'successful' => $this->session->test->successful,
+            'failed' => $this->session->test->failed,
+        ];
         $this->template->test = $this->session->test;
         $this->template->questions = $this->session->questions;
+    }
+
+    public function actionStats()
+    {
+        $remap_time = function ($test) {
+            return (object)array_merge((array)$test, [
+                'id' => new DateTime('@' . $test->id)
+            ]);
+        };
+        $this->template->tests = isset($this->session->tests) ? array_map($remap_time, $this->session->tests) : [];
+        $this->template->total_successful = array_reduce($this->template->tests, function ($acc, $test) {
+            return $acc + $test->successful;
+        }, 0);
+        $this->template->total_answered = array_reduce($this->template->tests, function ($acc, $test) {
+            return $acc + $test->answered;
+        }, 0);
     }
 }
