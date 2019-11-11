@@ -12,7 +12,7 @@
         <tbody>
         <tr n:foreach="$tests as $time => $test">
             <td>{$time|date: 'Y-m-d H:i:s'}</td>
-            <td>{$test->successful}/{$test->answered} ({$test->successful * 100 / $test->answered|number: 2}%)</td>
+            <td>{$test->successful}/{$test->answered} ({$test->answered > 0 ? $test->successful * 100 / $test->answered : 0|number: 2}%)</td>
         </tr>
         </tbody>
         <tfoot>
